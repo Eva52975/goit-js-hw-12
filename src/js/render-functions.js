@@ -1,10 +1,5 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
-
-import { findImage, currentQuery } from './pixabay-api';
-import { gallery, btnLoad } from '../main';
 
 export function renderElement(arr) {
   return arr
@@ -46,30 +41,3 @@ export function hideLoader() {
 }
 
 // ====================================
-export let page = 1;
-
-export async function loadMore(page, totalPages, btnLoad, inputValue) {
-  if (page >= totalPages) {
-    btnLoad.style.display = 'none';
-    return iziToast.error({
-      position: 'topRight',
-      message: "We're sorry, there are no more posts to load",
-    });
-  }
-  page += 1;
-  try {
-    const posts = await findImage(inputValue, page);
-    console.log(posts);
-    if (posts.length === 0) {
-      btnLoad.style.display = 'none';
-    }
-    gallery.insertAdjacentHTML('beforeend', renderElement(posts));
-    imgGallery();
-
-    if (page > 1) {
-      btnLoad.style.display = 'block';
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
