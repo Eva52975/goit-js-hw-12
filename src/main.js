@@ -40,7 +40,7 @@ form.addEventListener('submit', async e => {
     const markup = renderElement(images);
     gallery.insertAdjacentHTML('beforeend', markup);
     imgGallery();
-    if (images.length > 15) {
+    if (images.length >= 15) {
       btnLoad.style.display = 'block';
     } else {
       btnLoad.style.display = 'none';
