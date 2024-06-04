@@ -3,8 +3,8 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-import { findImage } from './pixabay-api';
-import { gallery } from '../main';
+import { findImage, currentQuery } from './pixabay-api';
+import { gallery, btnLoad } from '../main';
 
 export function renderElement(arr) {
   return arr
