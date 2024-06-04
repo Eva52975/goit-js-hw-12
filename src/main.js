@@ -18,8 +18,6 @@ btnLoad.style.display = 'none';
 hideLoader();
 let inputValue = '';
 let page = 1;
-let limit = 15;
-const totalPages = Math.ceil(500 / limit);
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
@@ -34,8 +32,9 @@ form.addEventListener('submit', async e => {
 
   try {
     const images = await findImage(inputValue, page);
-    if (images.length === 0) {
+    if (!images || images.length === 0) {
       btnLoad.style.display = 'none';
+      return;
     }
     const markup = renderElement(images);
     gallery.insertAdjacentHTML('beforeend', markup);
@@ -55,24 +54,20 @@ form.addEventListener('submit', async e => {
 // ========================
 
 btnLoad.addEventListener('click', async () => {
-  if (page >= totalPages) {
-    btnLoad.style.display = 'none';
-    iziToast.error({
-      position: 'topRight',
-      message: "We're sorry, there are no more posts to load",
-    });
-    return;
-  }
   page += 1;
   try {
     const posts = await findImage(inputValue, page);
-    console.log(posts);
+    if (!posts || posts.length === 0) {
+      hideLoader();
+      iziToast.error({
+        position: 'topRight',
+        message: "We're sorry, there are no more posts to load",
+      });
+      btnLoad.style.display = 'none';
+      return;
+    }
     gallery.insertAdjacentHTML('beforeend', renderElement(posts));
     imgGallery();
-
-    if (page > 1) {
-      btnLoad.style.display = 'block';
-    }
   } catch (error) {
     console.log(error);
   }
