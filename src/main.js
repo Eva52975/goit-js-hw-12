@@ -55,8 +55,10 @@ form.addEventListener('submit', async e => {
 
 btnLoad.addEventListener('click', async () => {
   page += 1;
+  showLoader();
   try {
     const posts = await findImage(inputValue, page);
+
     if (!posts || posts.length === 0) {
       hideLoader();
       iziToast.error({
@@ -68,7 +70,18 @@ btnLoad.addEventListener('click', async () => {
     }
     gallery.insertAdjacentHTML('beforeend', renderElement(posts));
     imgGallery();
+
+    const lastCard = gallery.lastElementChild;
+    const cardHeight = lastCard.getBoundingClientRect().height;
+
+    window.scrollBy({
+      left: 0,
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
   } catch (error) {
     console.log(error);
+  } finally {
+    hideLoader();
   }
 });
