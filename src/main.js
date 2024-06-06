@@ -17,7 +17,6 @@ const btnLoad = document.querySelector('.btn-load-more');
 btnLoad.style.display = 'none';
 hideLoader();
 let inputValue = '';
-let page = 1;
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
@@ -31,8 +30,13 @@ form.addEventListener('submit', async e => {
   showLoader();
 
   try {
-    const images = await findImage(inputValue, page);
+    const images = await findImage(inputValue, (page = 1));
+    console.log(page);
     if (!images || images.length === 0) {
+      iziToast.error({
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+      });
       btnLoad.style.display = 'none';
       return;
     }
@@ -52,12 +56,13 @@ form.addEventListener('submit', async e => {
 });
 
 // ========================
-
+let page = 1;
 btnLoad.addEventListener('click', async () => {
   page += 1;
   showLoader();
   try {
     const posts = await findImage(inputValue, page);
+    console.log(page);
 
     if (!posts || posts.length === 0) {
       hideLoader();

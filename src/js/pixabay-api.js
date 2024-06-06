@@ -2,7 +2,7 @@ import axios from 'axios';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-export async function findImage(inputValue, page = 1) {
+export async function findImage(inputValue, page) {
   const BASE_URL = 'https://pixabay.com';
   const END_POINT = '/api/';
   const params = new URLSearchParams({
@@ -17,14 +17,7 @@ export async function findImage(inputValue, page = 1) {
 
   try {
     const { data } = await axios(`${BASE_URL}${END_POINT}?${params}`);
-    if (data.hits.length === 0) {
-      iziToast.error({
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
-      });
-    } else {
-      return data.hits;
-    }
+    return data.hits;
   } catch (error) {
     console.error(error.message);
   }
