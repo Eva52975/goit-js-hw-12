@@ -30,9 +30,10 @@ form.addEventListener('submit', async e => {
   showLoader();
 
   try {
-    const images = await findImage(inputValue, (page = 1));
-    console.log(page);
-    if (!images || images.length === 0) {
+    const { hits, totalHits } = await findImage(inputValue, (page = 1));
+    console.log(totalHits);
+    console.log(hits);
+    if (!hits || hits.length === 0) {
       iziToast.error({
         message:
           'Sorry, there are no images matching your search query. Please try again!',
@@ -40,10 +41,10 @@ form.addEventListener('submit', async e => {
       btnLoad.style.display = 'none';
       return;
     }
-    const markup = renderElement(images);
+    const markup = renderElement(hits);
     gallery.insertAdjacentHTML('beforeend', markup);
     imgGallery();
-    if (images.length >= 15) {
+    if (totalHits > 15) {
       btnLoad.style.display = 'block';
     } else {
       btnLoad.style.display = 'none';
@@ -53,6 +54,7 @@ form.addEventListener('submit', async e => {
   } finally {
     hideLoader();
   }
+  console.log(page);
 });
 
 // ========================
@@ -61,10 +63,10 @@ btnLoad.addEventListener('click', async () => {
   page += 1;
   showLoader();
   try {
-    const posts = await findImage(inputValue, page);
+    const { hits } = await findImage(inputValue, page);
     console.log(page);
 
-    if (!posts || posts.length === 0) {
+    if (!hits || hits.length === 0) {
       hideLoader();
       iziToast.error({
         position: 'topRight',
@@ -73,7 +75,7 @@ btnLoad.addEventListener('click', async () => {
       btnLoad.style.display = 'none';
       return;
     }
-    gallery.insertAdjacentHTML('beforeend', renderElement(posts));
+    gallery.insertAdjacentHTML('beforeend', renderElement(hits));
     imgGallery();
 
     const lastCard = gallery.lastElementChild;

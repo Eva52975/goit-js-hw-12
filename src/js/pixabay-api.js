@@ -1,6 +1,4 @@
 import axios from 'axios';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
 
 export async function findImage(inputValue, page) {
   const BASE_URL = 'https://pixabay.com';
@@ -17,7 +15,7 @@ export async function findImage(inputValue, page) {
 
   try {
     const { data } = await axios(`${BASE_URL}${END_POINT}?${params}`);
-    return data.hits;
+    return data;
   } catch (error) {
     console.error(error.message);
   }
