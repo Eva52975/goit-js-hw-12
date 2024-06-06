@@ -21,18 +21,21 @@ let inputValue = '';
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
-  gallery.innerHTML = '';
+
   inputValue = input.value.trim();
-  if (inputValue === '') {
+  if (!inputValue) {
+    iziToast.error({
+      message: 'Please enter a search query!',
+    });
     return;
   }
-
+  gallery.innerHTML = '';
   input.value = '';
   showLoader();
 
   try {
     const { hits, totalHits } = await findImage(inputValue, (page = 1));
-    if (!hits || hits.length === 0) {
+    if (!totalHits || totalHits.length === 0) {
       iziToast.error({
         message:
           'Sorry, there are no images matching your search query. Please try again!',
