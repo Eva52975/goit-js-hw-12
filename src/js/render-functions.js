@@ -1,5 +1,6 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+let lightbox;
 
 export function renderElement(arr) {
   return arr
@@ -23,10 +24,14 @@ export function renderElement(arr) {
 }
 
 export function imgGallery() {
-  const lightbox = new SimpleLightbox('.gallery a', {
+  lightbox = new SimpleLightbox('.gallery a', {
     captionDelay: 250,
     captionsData: 'alt',
   });
+  lightbox.refresh();
+}
+
+export function updateImgGallery() {
   lightbox.refresh();
 }
 

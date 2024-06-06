@@ -5,6 +5,7 @@ import { findImage } from './js/pixabay-api';
 import {
   renderElement,
   imgGallery,
+  updateImgGallery,
   showLoader,
   hideLoader,
 } from './js/render-functions';
@@ -31,8 +32,6 @@ form.addEventListener('submit', async e => {
 
   try {
     const { hits, totalHits } = await findImage(inputValue, (page = 1));
-    console.log(totalHits);
-    console.log(hits);
     if (!hits || hits.length === 0) {
       iziToast.error({
         message:
@@ -54,7 +53,6 @@ form.addEventListener('submit', async e => {
   } finally {
     hideLoader();
   }
-  console.log(page);
 });
 
 // ========================
@@ -64,7 +62,6 @@ btnLoad.addEventListener('click', async () => {
   showLoader();
   try {
     const { hits } = await findImage(inputValue, page);
-    console.log(page);
 
     if (!hits || hits.length === 0) {
       hideLoader();
@@ -76,7 +73,7 @@ btnLoad.addEventListener('click', async () => {
       return;
     }
     gallery.insertAdjacentHTML('beforeend', renderElement(hits));
-    imgGallery();
+    updateImgGallery();
 
     const lastCard = gallery.lastElementChild;
     const cardHeight = lastCard.getBoundingClientRect().height;
